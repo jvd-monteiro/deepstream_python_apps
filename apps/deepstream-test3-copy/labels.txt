@@ -1,0 +1,8 @@
+OK
+S/CapCol
+S/Cap
+S/Col
+EMP
+CAR
+CMN
+?

@@ -1,0 +1,4 @@
+/opt/nvidia/deepstream/deepstream-7.0/sources/deepstream_python_apps/bindings/build/CMakeFiles/pyds.dir
+/opt/nvidia/deepstream/deepstream-7.0/sources/deepstream_python_apps/bindings/build/CMakeFiles/pip_wheel.dir
+/opt/nvidia/deepstream/deepstream-7.0/sources/deepstream_python_apps/bindings/build/CMakeFiles/edit_cache.dir
+/opt/nvidia/deepstream/deepstream-7.0/sources/deepstream_python_apps/bindings/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,6 @@
+pyds.so
+pyds.egg-info/PKG-INFO
+pyds.egg-info/SOURCES.txt
+pyds.egg-info/dependency_links.txt
+pyds.egg-info/requires.txt
+pyds.egg-info/top_level.txt
