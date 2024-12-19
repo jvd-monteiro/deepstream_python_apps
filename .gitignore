@@ -1,0 +1,6 @@
+# Ignore specific file
+apps/deepstream-test3-copy/alerts_log.csv
+apps/deepstream-test3-copy/nohup.out
+
+# Ignore the reports directory
+apps/deepstream-test3-copy/reports/

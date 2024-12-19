@@ -53,7 +53,7 @@ PGIE_CLASS_ID_CMN = 6
 PGIE_CLASS_ID_IDK = 7
 MUXER_OUTPUT_WIDTH = 1920
 MUXER_OUTPUT_HEIGHT = 1080
-MUXER_BATCH_TIMEOUT_USEC = 33000
+MUXER_BATCH_TIMEOUT_USEC = 40000
 TILED_OUTPUT_WIDTH = 1280
 TILED_OUTPUT_HEIGHT = 720
 GST_CAPS_FEATURES_NVMM = "memory:NVMM"
@@ -97,10 +97,10 @@ CSV_FILENAME = "alerts_log.csv"
 
 # Camera name mapping for indices
 camera_name_map = {
-    0: "REV1",
-    1: "EXP1",
+    #0: "REV1",
+    0: "EXP1",
+    1: "EXP3",
     2: "EXP3",
-    3: "EXP3",
 }
 
 # Function to log the camera, timestamp when the alert condition is met
@@ -163,8 +163,8 @@ def pgie_src_pad_buffer_probe(pad, info, u_data):
             )
             confidence = obj_meta.confidence
 
-            # Discard problematic classes with confidence < 0.6
-            if obj_meta.class_id in [PGIE_CLASS_ID_SCAPCOL, PGIE_CLASS_ID_SCAP, PGIE_CLASS_ID_SCOL] and confidence < 0.6:
+            # Discard problematic classes with confidence < Threshold
+            if obj_meta.class_id in [PGIE_CLASS_ID_SCAPCOL, PGIE_CLASS_ID_SCAP, PGIE_CLASS_ID_SCOL] and confidence < 0.8:
                 # Properly remove the object from the metadata
                 next_l_obj = l_obj.next
                 pyds.nvds_remove_obj_meta_from_frame(frame_meta, obj_meta)  # Remove object metadata
@@ -350,7 +350,7 @@ def main(args, requested_pgie=None, config=None, disable_probe=False):
     for i in range(number_sources):
         print("Creating source_bin", i, "\n")
         uri_name = args[i]
-        if uri_name.find("rtsp://") == 0:
+        if uri_name.find("rtmp://") == 0:
             is_live = True
         source_bin = create_source_bin(i, uri_name)
         if not source_bin:
@@ -486,7 +486,7 @@ def main(args, requested_pgie=None, config=None, disable_probe=False):
     else:
         if not disable_probe:
             pgie_src_pad.add_probe(Gst.PadProbeType.BUFFER, pgie_src_pad_buffer_probe, 0)
-            GLib.timeout_add(10000, perf_data.perf_print_callback)
+            GLib.timeout_add(15000, perf_data.perf_print_callback)
 
     if environ.get("NVDS_ENABLE_LATENCY_MEASUREMENT") == "1":
         print("Pipeline Latency Measurement enabled!\nPlease set env var NVDS_ENABLE_COMPONENT_LATENCY_MEASUREMENT=1 for Component Latency Measurement")

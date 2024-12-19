@@ -3,7 +3,7 @@ import smtplib
 import schedule
 import time
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
@@ -11,9 +11,9 @@ from email import encoders
 
 # Email configuration
 EMAIL_SENDER = "jose@montini.tech"
-EMAIL_RECEIVER = "jvd.monteiro@gmail.com"
+EMAIL_RECEIVER = "renael.silva@guararapes.com.br"
 EMAIL_SUBJECT = "Relatorio Ocorrencias - EPI"
-EMAIL_BODY = "Em anexo arquivo com ocorrencias do dia de hoje"
+EMAIL_BODY = "Segue o relatorio de ocorrências nas câmeras da expedição para o dia de ontem"
 EMAIL_SMTP_SERVER = "smtp.office365.com"
 EMAIL_SMTP_PORT = 587
 EMAIL_PASSWORD = "xmhgjjdnjhbbgwrg"
@@ -27,6 +27,7 @@ DAILY_REPORT_DIR = "/opt/nvidia/deepstream/deepstream-7.0/sources/deepstream_pyt
 def filter_and_condense_csv_for_today():
     """Filter the original CSV to keep only today's entries and condense entries within the same minute."""
     today_str = datetime.now().strftime("%Y-%m-%d")
+    today_str = (datetime.strptime(today_str, "%Y-%m-%d") - timedelta(days=1)).strftime("%Y-%m-%d") #send data from yesterday
     daily_report_filename = f"daily_report_{today_str}.csv"
     daily_report_path = os.path.join(DAILY_REPORT_DIR, daily_report_filename)
 
@@ -116,7 +117,7 @@ def send_email_with_csv(daily_report_path):
 def daily_task():
     """Function to schedule the email-sending task at 12 PM daily."""
     print("Scheduling daily email at 12 PM.")
-    schedule.every().day.at("10:54").do(send_daily_report)
+    schedule.every().day.at("00:01").do(send_daily_report)
 
     while True:
         schedule.run_pending()
